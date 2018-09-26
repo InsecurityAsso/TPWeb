@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  db:
+    image: mariadb:latest
+    restart: always
+    environment:
+      MYSQL_DATABASE: ressi_db
+      MYSQL_USER: ressi_user
+      MYSQL_PASSWORD: ressi_pwd
+      MYSQL_ROOT_PASSWORD: ressi_pwd
+    volumes:
+      - ./ressi_db.sql:/docker-entrypoint-initdb.d/ressi_db.sql
+    command: [mysqld, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --wait_timeout=28800, --log-warnings=0]
+
+  php:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - "8088:80"
