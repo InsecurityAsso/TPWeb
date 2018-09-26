@@ -1,9 +1,9 @@
 #include <stdio.h>
-#include <string.h>
+#include <bsd/string.h>
 
 int main(int argc, char * argv[])
 {
-  char CB[9]; 
+  char CB[9];
   char ISBN[11];
   unsigned int nb;
   unsigned int prix;
@@ -18,7 +18,7 @@ int main(int argc, char * argv[])
   sscanf(argv[3],"%d",&prix);
   strlcpy(CB,argv[4],9);
 
-  // Check CB : 8 numbers exactly and nothing else 
+  // Check CB : 8 numbers exactly and nothing else
 
   if (strlen(argv[4])==8) {
     for (i=0;i<8;i++) {
@@ -27,7 +27,7 @@ int main(int argc, char * argv[])
     for (i=0;i<10;i++) {
       sum+=tab[i];
     }
-    if (sum==8) OK=1; 
+    if (sum==8) OK=1;
   }
 
   if (OK==1) printf("good CB number !\n");
@@ -40,4 +40,3 @@ int main(int argc, char * argv[])
     printf("Command recorded !\n");
   }
 }
-
