@@ -3,7 +3,7 @@ FROM php:5.6-apache
 RUN apt-get update
 
 COPY ./public_html /var/www/html
-RUN mkdir /var/www/html/work
+RUN mkdir /var/www/html/work && mkdir /var/www/html/forum/msg && mkdir /var/www/html/forum/img
 RUN chmod -R 777 /var/www/html
 
 RUN apt-get install -y libbsd-dev
