@@ -1,20 +1,22 @@
 FROM php:5.6-apache
 
-RUN apt-get update
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y apt-utils mariadb-server mariadb-client python3
 
-COPY ./public_html /var/www/html
-RUN mkdir /var/www/html/work && mkdir /var/www/html/forum/msg && mkdir /var/www/html/forum/img
-RUN chmod -R 777 /var/www/html
-
-RUN apt-get install -y libbsd-dev
 COPY ./src /tmp/src
-RUN gcc -W -Wall -O3 /tmp/src/check_CB.c -lbsd -o /var/www/html/system/check_CB
-RUN rm -rf /tmp/src
+COPY ./public_html /var/www/html
 
-RUN apt-get install -y python3
+RUN mkdir /var/www/html/work && \
+    mkdir /var/www/html/forum/msg && \
+    mkdir /var/www/html/forum/img && \
+    chmod -R 777 /var/www/html
+
+RUN apt-get install -y libbsd-dev && \
+    gcc -O3 /tmp/src/check_CB.c -lbsd -o /var/www/html/system/check_CB && \
+    rm -rf /tmp/src
 
 COPY ./unqlite /tmp/unqlite
-RUN gcc -W -Wall -O6 /tmp/unqlite/unqlite_jx9_interp.c /tmp/unqlite/unqlite.c -o /usr/local/bin/unqlite_jx9
-RUN rm -rf /tmp/unqlite
-
-RUN docker-php-ext-install mysql
+RUN gcc -O3 /tmp/unqlite/unqlite_jx9_interp.c /tmp/unqlite/unqlite.c -o /usr/local/bin/unqlite_jx9 && \
+    rm -rf /tmp/unqlite && \
+    docker-php-ext-install mysql
